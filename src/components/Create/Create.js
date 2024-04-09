@@ -1,9 +1,25 @@
 import { useForm } from "../../hooks/useForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export const Create = ({
-    onCreate
-}) => {
+import { getBGdate } from "../../helpers/getBGdate";
+
+export const Create = () => {
+
+    const navigate = useNavigate();
+
+    const onCreate = async function(data) {
+        const date = getBGdate();
+        data = {...data, day:date };
+        await fetch('https://alertgiraffe.backendless.app/api/data/zabelejki', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+              },
+            body: JSON.stringify(data)  
+        })
+        navigate("/list");
+    }
+
     const {values, changeHandler, onSubmit} = useForm({
         name: '',
         text: ''

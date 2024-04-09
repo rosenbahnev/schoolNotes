@@ -6,7 +6,7 @@ import { List } from "./components/List/List";
 
 import './App.css';
 import { Create } from "./components/Create/Create";
-import { getBGdate } from "./helpers/getBGdate";
+
 
 
 function App() {
@@ -21,12 +21,7 @@ function App() {
        })()
     }, []);
 
-    const onCreate = function(data) {
-        const date = getBGdate();
-        data = {...data, day:date };
-        console.log(data);
-        navigate("/list");
-    }
+
 
     return (
         <div className="App">
@@ -35,7 +30,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/list" element={<List data={list}/>} />
-                    <Route path="/create" element={<Create onCreate={onCreate}/>} />
+                    <Route path="/create" element={<Create />} />
                 </Routes>
             </main>
         </div>
