@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 export const List = ({data}) => {
     data = data || [];
+    
     return (
         <>
             <h1>Забележки</h1>
