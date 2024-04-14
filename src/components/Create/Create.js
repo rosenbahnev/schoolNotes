@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { getBGdate } from "../../helpers/getBGdate";
 
-export const Create = () => {
+export const Create = ({addItem}) => {
 
     const navigate = useNavigate();
 
@@ -17,6 +17,10 @@ export const Create = () => {
               },
             body: JSON.stringify(data)  
         })
+        .then(res => res.json())
+        .then(data => addItem(data))
+
+        
         navigate("/list");
     }
 

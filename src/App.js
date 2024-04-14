@@ -21,6 +21,10 @@ function App() {
        })()
     }, []);
 
+    function addItem (newItem) {
+        setList([...list, {...newItem}])
+    }
+
 
 
     return (
@@ -30,7 +34,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/list" element={<List data={list}/>} />
-                    <Route path="/create" element={<Create />} />
+                    <Route path="/create" element={<Create addItem={addItem}/>} />
                 </Routes>
             </main>
         </div>
