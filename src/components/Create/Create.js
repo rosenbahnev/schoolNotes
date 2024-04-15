@@ -24,10 +24,19 @@ export const Create = ({ addItem }) => {
         navigate("/list");
     }
 
+    const onSubmitBtn =  function (data) {
+        if (data.name == '' || data.name =="" ) {
+            console.log("Incomplete inputs")
+            return
+        }
+
+        onCreate(data)
+    }
+
     const { values, changeHandler, onSubmit } = useForm({
         name: '',
         text: ''
-    }, onCreate)
+    }, onSubmitBtn)
 
 
     return (
@@ -44,11 +53,12 @@ export const Create = ({ addItem }) => {
                         value={values.name}
                         onChange={changeHandler}
                     />
+                  
                 </div>
 
                 <div className='input'>
                     <label htmlFor="text">Провинение:</label>
-                    <textarea rows="4" onls="70"
+                    <textarea rows="5" cols="30"
                         type="text"
                         id="text"
                         name="text"
