@@ -49,3 +49,10 @@ input {
 textarea {
   font-size: 1.3rem;
 }
+
+.inputError {
+  color: red;
+  margin: 0px;
+  font-size: 0.8em;
+  font-style: italic;
+}

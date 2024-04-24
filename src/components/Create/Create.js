@@ -2,14 +2,30 @@ import { useForm } from "../../hooks/useForm";
 import { Link, useNavigate } from "react-router-dom";
 
 import { getBGdate } from "../../helpers/getBGdate";
+import { useState } from "react";
 
 export const Create = ({ addItem }) => {
 
+    const [hasNameError, setNameError] = useState(false);
+    const [hasTextError, setTextError] = useState(false);
+    const [nameInput, setNameInput] = useState('');
+    const [textInput, setTextInput] = useState('');
+
+    function nameInputHandler (event) {
+        setNameInput(event.target.value);
+        setNameError(false);
+    }
+    function textInputHandler (event) {
+        setTextInput(event.target.value);
+        setTextError(false);
+        
+    }
+
     const navigate = useNavigate();
 
-    const onCreate = async function (data) {
+    const onCreate = async function () {
         const date = getBGdate();
-        data = { ...data, day: date };
+        const data = { name: nameInput, text: textInput, day: date };
         await fetch('https://alertgiraffe.backendless.app/api/data/zabelejki', {
             method: "POST",
             headers: {
@@ -24,19 +40,30 @@ export const Create = ({ addItem }) => {
         navigate("/list");
     }
 
-    const onSubmitBtn =  function (data) {
-        if (data.name == '' || data.name =="" ) {
-            console.log("Incomplete inputs")
+    const onSubmit =  function (e) {
+        e.preventDefault();
+
+        let hasError = false;
+
+        if (nameInput == '' ) {
+            setNameError(true);
+            hasError = true;
+        }
+        if (textInput == '') {
+            setTextError(true)
+            hasError = true;
+        }
+        if (hasError == true) {
             return
         }
 
-        onCreate(data)
+        onCreate()
     }
 
-    const { values, changeHandler, onSubmit } = useForm({
-        name: '',
-        text: ''
-    }, onSubmitBtn)
+    // const { values, changeHandler, onSubmit } = useForm({
+    //     name: '',
+    //     text: ''
+    // }, onSubmitBtn)
 
 
     return (
@@ -50,9 +77,10 @@ export const Create = ({ addItem }) => {
                         id="name"
                         name="name"
                         placeholder="Име"
-                        value={values.name}
-                        onChange={changeHandler}
+                        value={nameInput}
+                        onChange={nameInputHandler}
                     />
+                    {hasNameError && <p className="inputError">Невалидно име</p>}
                   
                 </div>
 
@@ -63,9 +91,10 @@ export const Create = ({ addItem }) => {
                         id="text"
                         name="text"
                         placeholder="Какво е направил"
-                        value={values.text}
-                        onChange={changeHandler}
+                        value={textInput}
+                        onChange={textInputHandler}
                     />
+                    {hasTextError && <p className="inputError">Невалидeн текст</p>}
                 </div>
 
                 <div className='input'>
