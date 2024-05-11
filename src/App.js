@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 
 import { Home } from "./components/Home/Home";
 import { List } from "./components/List/List";
@@ -10,7 +10,6 @@ import { Create } from "./components/Create/Create";
 
 
 function App() {
-    const navigate = useNavigate();
     const [list, setList] = useState();
 
     useEffect(() => {
@@ -25,6 +24,15 @@ function App() {
         setList([...list, {...newItem}])
     }
 
+    function updateVotes(item) {
+        const oldList = [...list]
+        const target = oldList.find(x => x.objectId === item.objectId)
+        
+        target['upvotes'] = item.upvotes;
+        target['downvotes'] = item.downvotes;
+        setList(oldList)
+    }
+
 
 
     return (
@@ -33,7 +41,7 @@ function App() {
             <main id="main-content">
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/list" element={<List data={list}/>} />
+                    <Route path="/list" element={<List data={list} updateVotes={updateVotes}/>} />
                     <Route path="/create" element={<Create addItem={addItem}/>} />
                 </Routes>
             </main>
