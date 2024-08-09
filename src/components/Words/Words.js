@@ -40,6 +40,7 @@ const Words = () => {
                     words={words}
                     onWordAdd={onWordAdd}
                     onWordDeletion={onWordDeletion}
+                    setIsLoading={setIsLoading}
                 />
             )}
 

@@ -2,7 +2,12 @@ import { useState } from "react";
 
 import styles from "./Words.module.css";
 
-export default function WordList({ words, onWordAdd, onWordDeletion }) {
+export default function WordList({
+    words,
+    onWordAdd,
+    onWordDeletion,
+    setIsLoading,
+}) {
     const [newWord, setNewWord] = useState("");
     const [hasNewWordError, setHasNewWordError] = useState(false);
 
@@ -27,6 +32,7 @@ export default function WordList({ words, onWordAdd, onWordDeletion }) {
     }
 
     async function deleteWordHandler(id) {
+        setIsLoading(true);
         await fetch(
             `https://alertgiraffe.backendless.app/api/data/words/${id}`,
             {
@@ -38,6 +44,8 @@ export default function WordList({ words, onWordAdd, onWordDeletion }) {
         )
             .then((res) => res.json())
             .then((data) => console.log(data));
+
+        setIsLoading(false);
 
         onWordDeletion(id);
     }
