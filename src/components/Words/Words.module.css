@@ -7,6 +7,10 @@
     margin-bottom: 10px;
 }
 
+.margin10 {
+    margin: 10px 0;
+}
+
 .wordListItem {
     display: inline-block;
     padding: 0.3rem 4rem;
@@ -18,4 +22,8 @@
 
 .list {
     margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: beige;
 }

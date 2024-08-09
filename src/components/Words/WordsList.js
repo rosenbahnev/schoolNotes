@@ -55,7 +55,6 @@ export default function WordList({
             <div className="input">
                 <label htmlFor="name">Нова дума за писане</label>
                 <input
-                    className={styles.bottomMargin10}
                     type="text"
                     id="word"
                     name="word"
