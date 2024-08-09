@@ -5,11 +5,17 @@ export const Home = () => {
         <>
             <img id="img_belejnik" src="belezhnik.jpg"></img>
 
-            <Link className="btn-general" to={'/list'}>Забелeжки</Link>
-            <p></p>
-            <Link className="btn-general" to={'/create'}>Писане на забележка</Link>
-        
+            <Link className="btn-general" to={"/list"}>
+                Забелeжки
+            </Link>
+            <p>
+                <Link className="btn-general" to={"/create"}>
+                    Писане на забележка
+                </Link>
+            </p>
+            <Link className="btn-general" to={"/words"}>
+                Думи за преписване
+            </Link>
         </>
-    )
-}
-
+    );
+};
