@@ -13,10 +13,14 @@ export default function WordList({
 
     function newWordChangeHandler(event) {
         setNewWord(event.target.value);
+        setHasNewWordError(false);
     }
 
     async function newWordHandler() {
-        if (newWord.length < 3) return;
+        if (newWord.length < 3) {
+            setHasNewWordError(true);
+            return;
+        }
 
         await fetch("https://alertgiraffe.backendless.app/api/data/words", {
             method: "POST",
