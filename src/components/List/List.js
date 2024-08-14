@@ -22,6 +22,9 @@ export const List = ({ data, updateVotes }) => {
     return (
         <>
             <h1>Забележки</h1>
+            <Link className="btn-general" to={"/create"}>
+                Писане на забележка
+            </Link>
             <ul>
                 {data.map((x) => (
                     <li className="zabelejka" key={x.objectId}>
@@ -52,13 +55,7 @@ export const List = ({ data, updateVotes }) => {
                     </li>
                 ))}
             </ul>
-
-            <Link className="btn-general" to={"/create"}>
-                Писане на забележка
-            </Link>
-            <Link className="btn-general" to={"/"}>
-                Начало
-            </Link>
+            <div></div>
         </>
     );
 };

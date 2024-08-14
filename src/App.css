@@ -6,9 +6,8 @@
 
 .App {
     text-align: center;
-    padding: 20px;
     background-color: rgb(235, 240, 235);
-    max-width: 800px;
+
     margin: 0 auto;
     min-height: 100vh;
 }

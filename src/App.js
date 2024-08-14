@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./components/Home/Home";
 import { List } from "./components/List/List";
 
 import "./App.css";
 import { Create } from "./components/Create/Create";
 import { Words } from "./components/Words/Words";
+import AppLayout from "./components/AppLayout/AppLayout";
 
 function App() {
     const [list, setList] = useState();
@@ -35,22 +35,24 @@ function App() {
         setList(oldList);
     }
 
+    const router = createBrowserRouter([
+        {
+            element: <AppLayout />,
+            children: [
+                { path: "/", element: <Home /> },
+                {
+                    path: "/list",
+                    element: <List data={list} updateVotes={updateVotes} />,
+                },
+                { path: "/create", element: <Create addItem={addItem} /> },
+                { path: "/words", element: <Words /> },
+            ],
+        },
+    ]);
+
     return (
         <div className="App">
-            <main id="main-content">
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route
-                        path="/list"
-                        element={<List data={list} updateVotes={updateVotes} />}
-                    />
-                    <Route
-                        path="/create"
-                        element={<Create addItem={addItem} />}
-                    />
-                    <Route path="/words" element={<Words />} />
-                </Routes>
-            </main>
+            <RouterProvider router={router} />
         </div>
     );
 }

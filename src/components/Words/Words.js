@@ -43,10 +43,6 @@ const Words = () => {
                     setIsLoading={setIsLoading}
                 />
             )}
-
-            <Link className="btn-general" to={"/"}>
-                Начало
-            </Link>
         </>
     );
 };

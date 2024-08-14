@@ -110,11 +110,6 @@ export const Create = ({ addItem }) => {
                         Отказ
                     </Link>
                 </div>
-                <div className="input">
-                    <Link className="btn-general" to={"/"}>
-                        Начало
-                    </Link>
-                </div>
             </form>
         </>
     );

@@ -1,0 +1,36 @@
+.logo img {
+    display: inline-block;
+    height: 50px;
+    width: auto;
+}
+
+.headLink {
+    text-decoration: none;
+}
+
+.header :global(.active) {
+    text-decoration: underline !important;
+    font-weight: bold;
+}
+
+.header {
+    padding: 10px 0 10px 0;
+    border-bottom: 2px solid black;
+    margin-bottom: 25px;
+    position: sticky;
+    top: 0;
+    background-color: aliceblue;
+}
+
+.nav {
+    max-width: 250px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.main {
+    margin: 0 auto;
+    padding: 0 20px;
+    max-width: 800px;
+}
