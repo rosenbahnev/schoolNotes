@@ -1,7 +1,32 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Spinner from "../Spinner/Spinner";
 
-export const List = ({ data, updateVotes }) => {
-    data = data || [];
+export const List = () => {
+    const [list, setList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        (async function () {
+            setIsLoading(true);
+            const data = await (
+                await fetch(
+                    "https://alertgiraffe.backendless.app/api/data/zabelejki"
+                )
+            ).json();
+            setList(data);
+            setIsLoading(false);
+        })();
+    }, []);
+
+    function updateVotes(item) {
+        const oldList = [...list];
+        const target = oldList.find((x) => x.objectId === item.objectId);
+
+        target["upvotes"] = item.upvotes;
+        target["downvotes"] = item.downvotes;
+        setList(oldList);
+    }
 
     async function voteCallback(id, currentVotes, direction) {
         const decision = direction === "up" ? "upvotes" : "downvotes";
@@ -19,6 +44,13 @@ export const List = ({ data, updateVotes }) => {
             .then((data) => updateVotes(data));
     }
 
+    if (isLoading)
+        return (
+            <>
+                <h1>Забележки</h1>
+                <Spinner />;
+            </>
+        );
     return (
         <>
             <h1>Забележки</h1>
@@ -26,7 +58,7 @@ export const List = ({ data, updateVotes }) => {
                 Писане на забележка
             </Link>
             <ul>
-                {data.map((x) => (
+                {list.map((x) => (
                     <li className="zabelejka" key={x.objectId}>
                         {x.name} - {x.day}
                         <p>{x.text}</p>
@@ -55,7 +87,17 @@ export const List = ({ data, updateVotes }) => {
                     </li>
                 ))}
             </ul>
-            <div></div>
         </>
     );
 };
+
+export async function loader() {
+    const res = await fetch(
+        "https://alertgiraffe.backendless.app/api/data/zabelejki"
+    );
+
+    if (!res.ok) throw Error("Проблем при зарежданеот на забележките");
+    const data = await res.json();
+
+    return data;
+}

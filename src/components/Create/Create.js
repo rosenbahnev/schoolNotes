@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { getBGdate } from "../../helpers/getBGdate";
 import { useState } from "react";
 
-export const Create = ({ addItem }) => {
+export const Create = () => {
+    function addItem() {}
+
     const [hasNameError, setNameError] = useState(false);
     const [hasTextError, setTextError] = useState(false);
     const [nameInput, setNameInput] = useState("");
@@ -28,7 +30,7 @@ export const Create = ({ addItem }) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({ ...data, upvotes: 0, downvotes: 0 }),
         })
             .then((res) => res.json())
             .then((data) => addItem(data));
