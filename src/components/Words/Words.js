@@ -1,34 +1,29 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
 import WordList from "./WordsList";
 import Spinner from "../Spinner/Spinner";
+import { useQuery } from "@tanstack/react-query";
+import { getWords } from "../../services.js/apiWords";
+import WordsForm from "./WordsForm";
 
 const Words = () => {
-    const [words, setWords] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        (async function () {
-            const data = await (
-                await fetch(
-                    "https://alertgiraffe.backendless.app/api/data/words"
-                )
-            ).json();
-            setWords(data);
-            setIsLoading(false);
-        })();
-    }, []);
-
     function onWordAdd(word) {
-        setWords((state) => [...state, word]);
+        console.log(word);
     }
 
     function onWordDeletion(id) {
         console.log("Delete id, ", id);
-
-        setWords((state) => state.filter((x) => x.objectId !== id));
     }
+    function setIsLoading() {
+        console.log("loading");
+    }
+
+    const {
+        isLoading,
+        data: words,
+        error,
+    } = useQuery({
+        queryKey: ["words"],
+        queryFn: getWords,
+    });
 
     return (
         <>
@@ -36,12 +31,15 @@ const Words = () => {
             {isLoading ? (
                 <Spinner />
             ) : (
-                <WordList
-                    words={words}
-                    onWordAdd={onWordAdd}
-                    onWordDeletion={onWordDeletion}
-                    setIsLoading={setIsLoading}
-                />
+                <div>
+                    <WordsForm />
+                    <WordList
+                        words={words}
+                        onWordAdd={onWordAdd}
+                        onWordDeletion={onWordDeletion}
+                        setIsLoading={setIsLoading}
+                    />
+                </div>
             )}
         </>
     );

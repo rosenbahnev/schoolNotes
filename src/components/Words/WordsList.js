@@ -1,77 +1,22 @@
-import { useState } from "react";
-
 import styles from "./Words.module.css";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteWord } from "../../services.js/apiWords";
+import Spinner from "../Spinner/Spinner";
+import SmalSpinner from "../Spinner/SmalSpinner";
 
-export default function WordList({
-    words,
-    onWordAdd,
-    onWordDeletion,
-    setIsLoading,
-}) {
-    const [newWord, setNewWord] = useState("");
-    const [hasNewWordError, setHasNewWordError] = useState(false);
+export default function WordList({ words }) {
+    const queryClient = useQueryClient();
 
-    function newWordChangeHandler(event) {
-        setNewWord(event.target.value);
-        setHasNewWordError(false);
-    }
-
-    async function newWordHandler() {
-        if (newWord.length < 3) {
-            setHasNewWordError(true);
-            return;
-        }
-
-        await fetch("https://alertgiraffe.backendless.app/api/data/words", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ word: newWord }),
-        })
-            .then((res) => res.json())
-            .then((data) => onWordAdd(data));
-
-        setNewWord("");
-    }
-
-    async function deleteWordHandler(id) {
-        setIsLoading(true);
-        await fetch(
-            `https://alertgiraffe.backendless.app/api/data/words/${id}`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => console.log(data));
-
-        setIsLoading(false);
-
-        onWordDeletion(id);
-    }
+    const { isPending: isDeleting, mutate } = useMutation({
+        mutationFn: deleteWord,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["words"] });
+        },
+    });
+    console.log(isDeleting);
 
     return (
         <>
-            <div className="input">
-                <label htmlFor="name">Нова дума за писане</label>
-                <input
-                    type="text"
-                    id="word"
-                    name="word"
-                    value={newWord}
-                    onChange={newWordChangeHandler}
-                />
-                {hasNewWordError && (
-                    <p className="inputError">Невалидна дума</p>
-                )}
-                <button className="btn-general" onClick={newWordHandler}>
-                    Добави дума
-                </button>
-            </div>
             {words.length === 0 ? (
                 <h2>Браво, нямаш думи за писане</h2>
             ) : (
@@ -80,14 +25,16 @@ export default function WordList({
                         <li className={styles.wordListItem} key={x.objectId}>
                             <p>
                                 {x.word}{" "}
-                                <button
-                                    onClick={() =>
-                                        deleteWordHandler(x.objectId)
-                                    }
-                                    className={styles["btn-close"]}
-                                >
-                                    &#x2715;
-                                </button>
+                                {isDeleting ? (
+                                    <SmalSpinner />
+                                ) : (
+                                    <button
+                                        onClick={() => mutate(x.objectId)}
+                                        className={styles["btn-close"]}
+                                    >
+                                        &#x2715;
+                                    </button>
+                                )}
                             </p>
                         </li>
                     ))}
