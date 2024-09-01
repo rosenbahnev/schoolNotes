@@ -32,6 +32,11 @@
     line-height: 1;
 }
 
+.btn-general:disabled {
+    background-color: #e8e5e5;
+    color: #6c6b6b;
+}
+
 .zabelejka {
     border: 1px solid black;
     border-radius: 10px;
