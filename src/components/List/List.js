@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../Spinner/Spinner";
+import Modal from "../../ui/Modal/Modal";
+import { Create } from "../Create/Create";
 
 export const List = () => {
     const [list, setList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    function onCloseModal() {
+        setShowModal(false);
+    }
 
     useEffect(() => {
         (async function () {
             setIsLoading(true);
             const data = await (
                 await fetch(
-                    "https://alertgiraffe.backendless.app/api/data/zabelejki"
+                    "https://alertgiraffe.backendless.app/api/data/zabelejki?pageSize=100"
                 )
             ).json();
             setList(data);
@@ -54,9 +60,15 @@ export const List = () => {
     return (
         <>
             <h1>Забележки</h1>
-            <Link className="btn-general" to={"/create"}>
+
+            <button onClick={() => setShowModal(true)} className="btn-general">
                 Писане на забележка
-            </Link>
+            </button>
+            {showModal && (
+                <Modal>
+                    <Create onCloseModal={onCloseModal} />
+                </Modal>
+            )}
             <ul>
                 {list.map((x) => (
                     <li className="zabelejka" key={x.objectId}>
