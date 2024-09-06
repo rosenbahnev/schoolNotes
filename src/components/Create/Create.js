@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getBGdate } from "../../helpers/getBGdate";
 import { useState } from "react";
 
-export const Create = ({ onCloseModal }) => {
+export const Create = ({ onClose }) => {
     function addItem() {}
 
     const [hasNameError, setNameError] = useState(false);
@@ -111,7 +111,7 @@ export const Create = ({ onCloseModal }) => {
                     <button
                         type="button"
                         className="btn-general"
-                        onClick={onCloseModal}
+                        onClick={onClose}
                     >
                         Отказ
                     </button>

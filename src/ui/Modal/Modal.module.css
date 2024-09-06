@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(3px);
     z-index: 1000;
     transition: all 0.5s;
 }
@@ -14,6 +14,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border: 1px solid rgb(193, 192, 188);
     border-radius: 10px;
     box-shadow: 4px;
     padding: 3.2rem 4rem;

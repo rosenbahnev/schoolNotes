@@ -7,10 +7,6 @@ import { Create } from "../Create/Create";
 export const List = () => {
     const [list, setList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    function onCloseModal() {
-        setShowModal(false);
-    }
 
     useEffect(() => {
         (async function () {
@@ -61,14 +57,15 @@ export const List = () => {
         <>
             <h1>Забележки</h1>
 
-            <button onClick={() => setShowModal(true)} className="btn-general">
-                Писане на забележка
-            </button>
-            {showModal && (
-                <Modal>
-                    <Create onCloseModal={onCloseModal} />
-                </Modal>
-            )}
+            <Modal>
+                <Modal.Open name="form">
+                    <button className="btn-general">Писане на забележка</button>
+                </Modal.Open>
+                <Modal.Window name="form">
+                    <Create />
+                </Modal.Window>
+            </Modal>
+
             <ul>
                 {list.map((x) => (
                     <li className="zabelejka" key={x.objectId}>
