@@ -25,11 +25,10 @@ export const Create = ({ onClose }) => {
     const { mutate, isPending } = useMutation({
         mutationFn: addListItem,
         onSuccess: () => {
-            console.log("success");
             queryClient.invalidateQueries({ queryKey: ["list"] });
             onClose();
         },
-        onError: (e) => console.log(e),
+        onError: (e) => console.error(e),
     });
 
     const onSubmit = async function (e) {

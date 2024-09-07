@@ -13,7 +13,6 @@ export default function WordList({ words }) {
             queryClient.invalidateQueries({ queryKey: ["words"] });
         },
     });
-    console.log(isDeleting);
 
     return (
         <>

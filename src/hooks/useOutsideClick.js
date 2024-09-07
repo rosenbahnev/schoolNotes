@@ -4,8 +4,8 @@ export default function useOutsideClick(handler, listenCapturing = true) {
     const ref = useRef();
 
     useEffect(
-        function (e) {
-            function handleClick() {
+        function () {
+            function handleClick(e) {
                 if (ref.current && !ref.current.contains(e.target)) {
                     handler();
                 }
@@ -17,4 +17,6 @@ export default function useOutsideClick(handler, listenCapturing = true) {
         },
         [handler, listenCapturing]
     );
+
+    return ref;
 }

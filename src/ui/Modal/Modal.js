@@ -1,6 +1,6 @@
 import { cloneElement, createContext, useContext, useState } from "react";
 import styles from "./Modal.module.css";
-import { createPortal } from "react-dom";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 const ModalContext = createContext();
 
@@ -15,35 +15,31 @@ function Modal({ children }) {
             {children}
         </ModalContext.Provider>
     );
-
-    // return (
-    //     <div className={styles.overlay}>
-    //         <div className={styles.modal}>{children}</div>
-    //     </div>
-    // );
 }
 
 function Open({ children, name }) {
     const { open } = useContext(ModalContext);
 
-    // return cloneElement(children });
     return cloneElement(children, {
         onClick: () => {
             open(name);
-            console.log("click");
         },
     });
 }
 
 function Window({ children, name }) {
     const { openName, close } = useContext(ModalContext);
+    const ref = useOutsideClick(close);
 
     if (name !== openName) return null;
 
     return (
         <div className={styles.overlay}>
-            <div className={styles.modal}>
-                {cloneElement(children, { onClose: close })}
+            <div className={styles.modal} ref={ref}>
+                <button className={styles.closingBtn} onClick={close}>
+                    X
+                </button>
+                <div>{cloneElement(children, { onClose: close })}</div>
             </div>
         </div>
     );

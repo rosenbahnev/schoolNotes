@@ -18,8 +18,6 @@ export default function WordsForm() {
         },
     });
 
-    console.log(isAdding);
-
     function onSubmit(data) {
         mutate(data);
     }

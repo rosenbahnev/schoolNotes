@@ -9,7 +9,6 @@ export async function getList() {
 }
 
 export async function addListItem(item) {
-    console.log("AddItem API");
     const data = await (
         await fetch("https://alertgiraffe.backendless.app/api/data/zabelejki", {
             method: "POST",
@@ -18,6 +17,23 @@ export async function addListItem(item) {
             },
             body: item,
         })
+    ).json();
+
+    return data;
+}
+
+export async function editVotes({ id, votes, type }) {
+    const data = (
+        await fetch(
+            `https://alertgiraffe.backendless.app/api/data/zabelejki/${id}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ [type]: votes }),
+            }
+        )
     ).json();
 
     return data;
