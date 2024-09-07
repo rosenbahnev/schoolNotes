@@ -2,9 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { getBGdate } from "../../helpers/getBGdate";
 import { useState } from "react";
+import { addListItem } from "../../services.js/apiList";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const Create = ({ onClose }) => {
-    function addItem() {}
+    const queryClient = useQueryClient();
 
     const [hasNameError, setNameError] = useState(false);
     const [hasTextError, setTextError] = useState(false);
@@ -20,25 +22,17 @@ export const Create = ({ onClose }) => {
         setTextError(false);
     }
 
-    const navigate = useNavigate();
+    const { mutate, isPending } = useMutation({
+        mutationFn: addListItem,
+        onSuccess: () => {
+            console.log("success");
+            queryClient.invalidateQueries({ queryKey: ["list"] });
+            onClose();
+        },
+        onError: (e) => console.log(e),
+    });
 
-    const onCreate = async function () {
-        const date = getBGdate();
-        const data = { name: nameInput, text: textInput, day: date };
-        await fetch("https://alertgiraffe.backendless.app/api/data/zabelejki", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ ...data, upvotes: 0, downvotes: 0 }),
-        })
-            .then((res) => res.json())
-            .then((data) => addItem(data));
-
-        navigate("/list");
-    };
-
-    const onSubmit = function (e) {
+    const onSubmit = async function (e) {
         e.preventDefault();
 
         let hasError = false;
@@ -55,13 +49,17 @@ export const Create = ({ onClose }) => {
             return;
         }
 
-        onCreate();
-    };
+        const date = getBGdate();
+        const newItem = JSON.stringify({
+            name: nameInput,
+            text: textInput,
+            day: date,
+            upvotes: 0,
+            downvotes: 0,
+        });
 
-    // const { values, changeHandler, onSubmit } = useForm({
-    //     name: '',
-    //     text: ''
-    // }, onSubmitBtn)
+        mutate(newItem);
+    };
 
     return (
         <>
@@ -78,6 +76,7 @@ export const Create = ({ onClose }) => {
                         placeholder="Име"
                         value={nameInput}
                         onChange={nameInputHandler}
+                        disabled={isPending}
                     />
                     {hasNameError && (
                         <p className="inputError">Невалидно име</p>
@@ -95,6 +94,7 @@ export const Create = ({ onClose }) => {
                         placeholder="Какво е направил"
                         value={textInput}
                         onChange={textInputHandler}
+                        disabled={isPending}
                     />
                     {hasTextError && (
                         <p className="inputError">Невалидeн текст</p>
@@ -102,7 +102,11 @@ export const Create = ({ onClose }) => {
                 </div>
 
                 <div className="input">
-                    <button className="btn-general" type="submit">
+                    <button
+                        className="btn-general"
+                        type="submit"
+                        disabled={isPending}
+                    >
                         Създай забележка
                     </button>
                 </div>
@@ -112,6 +116,7 @@ export const Create = ({ onClose }) => {
                         type="button"
                         className="btn-general"
                         onClick={onClose}
+                        disabled={isPending}
                     >
                         Отказ
                     </button>

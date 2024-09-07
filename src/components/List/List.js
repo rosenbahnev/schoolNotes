@@ -3,23 +3,25 @@ import { Link } from "react-router-dom";
 import Spinner from "../Spinner/Spinner";
 import Modal from "../../ui/Modal/Modal";
 import { Create } from "../Create/Create";
+import { useQuery } from "@tanstack/react-query";
+import { getList } from "../../services.js/apiList";
 
 export const List = () => {
     const [list, setList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        (async function () {
-            setIsLoading(true);
-            const data = await (
-                await fetch(
-                    "https://alertgiraffe.backendless.app/api/data/zabelejki?pageSize=100"
-                )
-            ).json();
-            setList(data);
-            setIsLoading(false);
-        })();
-    }, []);
+    // useEffect(() => {
+    //     (async function () {
+    //         setIsLoading(true);
+    //         const data = await (
+    //             await fetch(
+    //                 "https://alertgiraffe.backendless.app/api/data/zabelejki?pageSize=100"
+    //             )
+    //         ).json();
+    //         setList(data);
+    //         setIsLoading(false);
+    //     })();
+    // }, []);
 
     function updateVotes(item) {
         const oldList = [...list];
@@ -46,6 +48,15 @@ export const List = () => {
             .then((data) => updateVotes(data));
     }
 
+    const {
+        isLoading: isQueryLoading,
+        data: words,
+        error,
+    } = useQuery({
+        queryKey: ["list"],
+        queryFn: getList,
+    });
+
     if (isLoading)
         return (
             <>
@@ -66,36 +77,42 @@ export const List = () => {
                 </Modal.Window>
             </Modal>
 
-            <ul>
-                {list.map((x) => (
-                    <li className="zabelejka" key={x.objectId}>
-                        {x.name} - {x.day}
-                        <p>{x.text}</p>
-                        <div className="voting-div">
-                            <span
-                                className="upvote-span"
-                                onClick={() =>
-                                    voteCallback(x.objectId, x.upvotes, "up")
-                                }
-                            >
-                                👍 {x.upvotes}
-                            </span>
-                            <span
-                                className="downvote-span"
-                                onClick={() =>
-                                    voteCallback(
-                                        x.objectId,
-                                        x.downvotes,
-                                        "down"
-                                    )
-                                }
-                            >
-                                👎 {x.downvotes}
-                            </span>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            {words && (
+                <ul>
+                    {words.map((x) => (
+                        <li className="zabelejka" key={x.objectId}>
+                            {x.name} - {x.day}
+                            <p>{x.text}</p>
+                            <div className="voting-div">
+                                <span
+                                    className="upvote-span"
+                                    onClick={() =>
+                                        voteCallback(
+                                            x.objectId,
+                                            x.upvotes,
+                                            "up"
+                                        )
+                                    }
+                                >
+                                    👍 {x.upvotes}
+                                </span>
+                                <span
+                                    className="downvote-span"
+                                    onClick={() =>
+                                        voteCallback(
+                                            x.objectId,
+                                            x.downvotes,
+                                            "down"
+                                        )
+                                    }
+                                >
+                                    👎 {x.downvotes}
+                                </span>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </>
     );
 };
