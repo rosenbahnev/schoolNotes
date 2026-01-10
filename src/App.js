@@ -5,6 +5,7 @@ import { List } from "./components/List/List";
 import "./App.css";
 import { Create } from "./components/Create/Create";
 import { Words } from "./components/Words/Words";
+import { Shoping } from "./components/Shoping/Shoping";
 import AppLayout from "./components/AppLayout/AppLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -28,6 +29,7 @@ function App() {
                 },
                 { path: "/create", element: <Create /> },
                 { path: "/words", element: <Words /> },
+                { path: "/shoping", element: <Shoping /> },
             ],
         },
     ]);

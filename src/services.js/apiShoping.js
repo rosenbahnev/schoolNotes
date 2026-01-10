@@ -1,0 +1,36 @@
+export async function getShoppingList() {
+    const data = await (
+        await fetch("https://alertgiraffe.backendless.app/api/data/shoping")
+    ).json();
+
+    return data;
+}
+
+export async function addShopingItem(newShopingItem) {
+    const data = await fetch(
+        "https://alertgiraffe.backendless.app/api/data/shoping",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newShopingItem),
+        }
+    ).then((res) => res.json());
+
+    return data;
+}
+
+export async function deleteShopingItem(id) {
+    const data = await fetch(
+        `https://alertgiraffe.backendless.app/api/data/shoping/${id}`,
+        {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    ).then((res) => res.json());
+
+    return data;
+}

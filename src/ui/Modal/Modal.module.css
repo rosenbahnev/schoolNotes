@@ -11,17 +11,24 @@
 
 .modal {
     position: fixed;
-    top: 50%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
     border: 1px solid rgb(193, 192, 188);
     border-radius: 10px;
     box-shadow: 4px;
-    padding: 3.2rem 4rem;
+    padding: 3.2rem 3rem;
     transition: all 0.5s;
     background-color: rgb(238, 238, 235);
+    width: 500px;
 }
 
+@media (max-width: 500px) {
+    .modal {
+        width: 95vw;
+        padding: 1rem 1rem;
+    }
+}
 .closingBtn {
     background: none;
     border: none;

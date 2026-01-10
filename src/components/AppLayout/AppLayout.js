@@ -15,6 +15,9 @@ export default function AppLayout() {
                     <NavLink className={styles.headLink} to="/words">
                         Думи
                     </NavLink>
+                    <NavLink className={styles.headLink} to="/shoping">
+                        Покупки
+                    </NavLink>
                 </div>
             </header>
             <main className={styles.main}>

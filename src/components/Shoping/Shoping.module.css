@@ -1,0 +1,62 @@
+.btn-close {
+    color: red;
+    cursor: pointer;
+    border: 1px solid gray;
+    padding: 0.2rem 0.35rem;
+    border-radius: 10px;
+}
+
+.bottomMargin10 {
+    margin-bottom: 10px;
+}
+
+.margin10 {
+    margin: 10px 0;
+}
+
+.shop_thumb {
+    height: 1.5rem;
+    width: auto;
+    margin-right: 0.5rem;
+}
+
+.delete_span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.shopingItem {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 1rem;
+    line-height: 1.2;
+    margin: 0.5rem;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 1.3rem;
+}
+
+.list {
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: beige;
+}
+
+.formInput {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.errorDiv {
+    height: 1rem;
+}
