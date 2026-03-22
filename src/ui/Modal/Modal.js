@@ -5,44 +5,51 @@ import useOutsideClick from "../../hooks/useOutsideClick";
 const ModalContext = createContext();
 
 function Modal({ children }) {
-    const [openName, setOpenName] = useState("");
+  const [openName, setOpenName] = useState("");
 
-    const close = () => setOpenName("");
-    const open = setOpenName;
+  const close = () => setOpenName("");
+  const open = setOpenName;
 
-    return (
-        <ModalContext.Provider value={{ open, close, openName }}>
-            {children}
-        </ModalContext.Provider>
-    );
+  return (
+    <ModalContext.Provider value={{ open, close, openName }}>
+      {children}
+    </ModalContext.Provider>
+  );
 }
 
 function Open({ children, name }) {
-    const { open } = useContext(ModalContext);
+  const { open } = useContext(ModalContext);
 
-    return cloneElement(children, {
-        onClick: () => {
-            open(name);
-        },
-    });
+  return cloneElement(children, {
+    onClick: () => {
+      open(name);
+    },
+  });
 }
 
-function Window({ children, name }) {
-    const { openName, close } = useContext(ModalContext);
-    const ref = useOutsideClick(close);
+function Window({ children, name, itemID, itemName, itemShop }) {
+  const { openName, close } = useContext(ModalContext);
+  const ref = useOutsideClick(close);
 
-    if (name !== openName) return null;
+  if (name !== openName) return null;
 
-    return (
-        <div className={styles.overlay}>
-            <div className={styles.modal} ref={ref}>
-                <button className={styles.closingBtn} onClick={close}>
-                    X
-                </button>
-                <div>{cloneElement(children, { onClose: close })}</div>
-            </div>
+  return (
+    <div className={styles.overlay}>
+      <div className={styles.modal} ref={ref}>
+        <button className={styles.closingBtn} onClick={close}>
+          X
+        </button>
+        <div>
+          {cloneElement(children, {
+            onClose: close,
+            itemID: itemID,
+            itemName: itemName,
+            itemShop: itemShop,
+          })}
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 Modal.Open = Open;
