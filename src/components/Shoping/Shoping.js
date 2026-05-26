@@ -25,6 +25,12 @@ const Shoping = () => {
     queryFn: getShoppingList,
   });
 
+  function countFor(filterValue) {
+    if (!shopingItems) return 0;
+    if (filterValue === "all") return shopingItems.length;
+    return shopingItems.filter((i) => i.shop === filterValue).length;
+  }
+
   const filteredItems = (
     filter === "all"
       ? (shopingItems ?? [])
@@ -62,6 +68,7 @@ const Shoping = () => {
             ) : (
               label
             )}
+            {` (${countFor(value)})`}
           </label>
         ))}
       </div>
